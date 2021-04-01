@@ -21,6 +21,12 @@ export const Container = styled.div`
           background: #39b100;
           color: #fff;
 
+          transition: filter 0.2s;
+
+          &:hover {
+           filter: brightness(0.9);  
+          }
+
           display: flex;
           flex-direction: row;
           align-items: center;
