@@ -3,7 +3,11 @@ import { FiPlusSquare } from 'react-icons/fi';
 import { Container } from './styles';
 import logoImg from '../../assets/logo.svg';
 
-export function Header() {
+interface HeaderProps {
+  onOpenNewCreateFoodModal: () => void;
+}
+
+export function Header({ onOpenNewCreateFoodModal }: HeaderProps) {
     return (
       <Container>
         <header>
@@ -12,6 +16,7 @@ export function Header() {
             <div>
               <button
                 type="button"
+                onClick={onOpenNewCreateFoodModal}
               >
                 <div className="text">Novo Prato</div>
                 <div className="icon">

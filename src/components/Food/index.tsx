@@ -26,11 +26,13 @@ export function Food() {
           <header>
             <img src={food.image} alt={food.name} />
           </header>
+          
           <section className="body">
             <h2>{food.name}</h2>
             <p>{food.description}</p>
             <p className="price"> R$ <b>{food.price}</b></p>
           </section>
+
           <section className="footer">
             <div className="icon-container">
               <button
