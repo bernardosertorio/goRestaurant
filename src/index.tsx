@@ -1,14 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createServer } from 'miragejs';
+import { createServer, Model } from 'miragejs';
 import { App } from './App';
 
 createServer({
-  routes() {
-    this.namespace = 'api';
+  models: {
+    food: Model
+  },
 
-    this.get('/foods', () => {
-      return [
+  seeds(server) {
+    server.db.loadData({
+      foods: [
         {
           id: 1,
           name: "Ao molho",
@@ -34,6 +36,20 @@ createServer({
           image: "https://storage.googleapis.com/golden-wind/bootcamp-gostack/desafio-food/food3.png"
         }
       ]
+    })
+  },
+
+  routes() {
+    this.namespace = 'api';
+
+    this.get('/foods', () => {
+      return this.schema.all('food')
+    })
+
+    this.post('/foods', (schema, request) => {
+      const data = JSON.parse(request.requestBody);
+
+      return schema.create('food', data);
     })
   }
 })
