@@ -18,9 +18,11 @@ interface ProviderFoodsProps {
 
 interface IFoodsContextData {
   foods: IFood[];
+  isAvailable: boolean;
   createFood: (food: IFoodInput) => void;
   updateFood: (food: IFood) => void;
   deleteFood: (id: number) => void;
+  toggleAvailable: (food: IFood) => void; 
 }
 
 export const FoodsContext = createContext<IFoodsContextData>(
@@ -29,6 +31,7 @@ export const FoodsContext = createContext<IFoodsContextData>(
 
 export function FoodsProvider({ children }: ProviderFoodsProps) {
   const [foods, setFoods] = useState<IFood[]>([]);
+  const [isAvailable, setIsAvailable] = useState(true)
 
   useEffect(() => {
     api.get('/foods').then(response => setFoods(response.data.foods))
@@ -63,6 +66,15 @@ export function FoodsProvider({ children }: ProviderFoodsProps) {
     }
   }
 
+  async function toggleAvailable(food: IFood) {
+    await api.put(`/foods/${food.id}`, {
+      ...food,
+      available: !isAvailable,
+    });
+
+    setIsAvailable(!isAvailable)
+  }
+
   async function deleteFood(id: number) {
     await api.delete(`/foods/${id}`);
 
@@ -72,7 +84,9 @@ export function FoodsProvider({ children }: ProviderFoodsProps) {
   }
 
   return (
-    <FoodsContext.Provider value={{ foods, createFood, updateFood, deleteFood }}>
+    <FoodsContext.Provider value={{ 
+      foods, isAvailable, createFood, updateFood, deleteFood, toggleAvailable 
+    }}>
       {children} 
     </FoodsContext.Provider>
   )
