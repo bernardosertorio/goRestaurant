@@ -1,24 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useFoods } from '../../hooks/useFoods';
 import { FiEdit3, FiTrash } from 'react-icons/fi';
-import { api } from '../../services/api';
 import { Container } from './styles';
 
-interface FoodProps {
-  id: number,
-  name: string,
-  description: string;
-  price: string,
-  available: boolean;
-  image: string;
-}
-
 export function Food() {
-  const [foods, setFoods] = useState<FoodProps[]>([]);
-
-  useEffect(() => {
-    api.get('/foods').then(response => setFoods(response.data.foods))
-  }, []);
-
+  const { foods } = useFoods();
+  
   return (
     <>
       {foods.map(food => ( 

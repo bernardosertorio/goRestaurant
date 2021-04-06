@@ -1,17 +1,30 @@
-import { createRef } from 'react';
+import { createRef as formRef, FormEvent, useCallback } from 'react';
 import { FiCheckSquare } from 'react-icons/fi';
 import { Form } from './styles';
 import { Modal } from '../Modal';
 import Input from '../Input';
+import { useFoods } from '../../hooks/useFoods';
+
+interface FoodContent {
+  name: string,
+  description: string;
+  price: string,
+  available: boolean;
+  image: string;
+}
 
 export function ModalCreateFood() {
-  function handleSubmit(data): void {
-    console.log(data)
-  }
+  const { createFood } = useFoods();
+
+  const handleCreateNewFood = useCallback(async(event: FormEvent, data: FoodContent) => {
+    event.preventDefault();
+
+    createFood(data)
+  }, [])
 
     return (
       <Modal>
-        <Form ref={formRef} onSubmit={handleSubmit}>
+        <Form ref={formRef} onSubmit={handleCreateNewFood}>
           <h1>Novo Prato</h1>
           <Input name="image" placeholder="Cole o link aqui" />
 

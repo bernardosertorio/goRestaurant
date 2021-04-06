@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import { Food } from '../../components/Food';
 import { Header } from '../../components/Header';
+import { ModalCreateFood } from '../../components/ModalCreateFood';
 import { FoodsContainer } from './styles';
-import { useState } from 'react';
 
 export function Dashboard() {
   const [isNewCreateFoodModalOpen, setIsNewCreateFoodModalOpen] = useState(false);
@@ -13,9 +14,11 @@ export function Dashboard() {
   function handleCloseNewCreateFoodModal() {
     setIsNewCreateFoodModalOpen(false)
   }
+
     return (
       <FoodsContainer>
         <Header onOpenNewCreateFoodModal={handleOpenNewCreateFoodModal}/>
+        <ModalCreateFood/>
         <Food />
       </FoodsContainer>
     );
