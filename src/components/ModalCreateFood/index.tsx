@@ -6,7 +6,7 @@ import { Modal } from '../Modal';
 import { Input } from '../Input';
 import { useFoods } from '../../hooks/useFoods';
 
-interface IFoodContent {
+interface ICreateFoodContent {
   name: string,
   description: string;
   price: string,
@@ -22,14 +22,14 @@ export function ModalCreateFood({ isOpen, onRequestClose }: ModalCreateFoodProps
   const formRef = useRef<FormHandles>(null)
   const { createFood } = useFoods();
 
-  async function handleSubmit(data: IFoodContent) {
+  async function handleCreateNewFoodSubmit(data: ICreateFoodContent) {
     createFood(data);
     onRequestClose();
   }
 
     return (
       <Modal isOpen={isOpen} onRequestClose={onRequestClose}>
-        <Form ref={formRef} onSubmit={handleSubmit}>
+        <Form ref={formRef} onSubmit={handleCreateNewFoodSubmit}>
           <h1>Novo Prato</h1>
           <Input name="image" placeholder="Cole o link aqui" />
 

@@ -26,7 +26,7 @@ export function Food({ food, handleDelete, handleUpdateFood }: IFoodProps) {
   }
   
   return (
-    <Container key={food.id}>
+    <Container>
       <header>
         <img src={food.image} alt={food.name} />
       </header>

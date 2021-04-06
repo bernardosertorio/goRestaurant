@@ -27,7 +27,8 @@ export function Dashboard() {
         />
         <FoodsContainer data-testid="foods-list">
           {foods.map(food => (
-              <Food 
+              <Food
+                key={food.id} 
                 food={food} 
                 handleDelete={deleteFood} 
                 handleUpdateFood={updateFood}

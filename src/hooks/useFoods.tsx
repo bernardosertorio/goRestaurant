@@ -37,10 +37,10 @@ export function FoodsProvider({ children }: ProviderFoodsProps) {
     api.get('/foods').then(response => setFoods(response.data.foods))
   }, []);
 
-  async function createFood(food: IFoodInput): Promise<void> {
+  async function createFood(data: IFoodInput): Promise<void> {
     try {
       const response = await api.post('/foods', {
-        ...food,
+        ...data,
         available: true,
       });
 
@@ -50,9 +50,9 @@ export function FoodsProvider({ children }: ProviderFoodsProps) {
     }
   }
 
-  async function updateFood(food: IFood):Promise<void> {
+  async function updateFood(food: IFoodInput):Promise<void> {
     try {
-      const foodUpdated = await api.put(`/foods/${food.id}`, 
+      const foodUpdated = await api.put(`/foods/${food}`, 
         {...food, ...food },
       );
 
