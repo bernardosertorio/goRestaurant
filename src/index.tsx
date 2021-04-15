@@ -43,16 +43,22 @@ createServer({
     this.namespace = 'api';
 
     this.get('/foods', () => {
-      return this.schema.all('food')
-    })
+      return this.schema.all('food');
+    });
 
     this.post('/foods', (schema, request) => {
       const data = JSON.parse(request.requestBody);
 
       return schema.create('food', data);
-    })
+    });
+
+    this.delete('/foods/:id', (schema, request) => {
+      let id = Number(request.params.id);
+
+      return schema.foods.find(id).destroy();
+    });
   }
-})
+});
 
 ReactDOM.render(
   <React.StrictMode>

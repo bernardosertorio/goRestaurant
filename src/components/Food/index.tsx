@@ -23,6 +23,10 @@ export function Food({ food, isAvailable, handleDelete, handleUpdateFood }: IFoo
     handleUpdateFood(food);
   }
 
+  const deleteFood = () => {
+    handleDelete(food.id);
+  }
+
   return (
     <Container>
       <header>
@@ -49,7 +53,7 @@ export function Food({ food, isAvailable, handleDelete, handleUpdateFood }: IFoo
           <button
             type="button"
             className="icon"
-            onClick={() => handleDelete(food.id)}
+            onClick={deleteFood}
             data-testid={`remove-food-${food.id}`}
           >
             <FiTrash size={20} />
