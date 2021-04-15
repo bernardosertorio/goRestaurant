@@ -44,7 +44,7 @@ export function FoodsProvider({ children }: ProviderFoodsProps) {
         available: true,
       });
 
-      setFoods([...foods, response.data]);
+      setFoods([...foods, response.data.food]);
     } catch (err) {
       console.log(err);
     }

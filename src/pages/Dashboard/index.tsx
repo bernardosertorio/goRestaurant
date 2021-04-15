@@ -6,7 +6,7 @@ import { FoodsContainer } from './styles';
 import { useFoods } from '../../hooks/useFoods';
 
 export function Dashboard() {
-  const { foods, deleteFood, updateFood } = useFoods();
+  const { foods, isAvailable, deleteFood, updateFood } = useFoods();
 
   const [isNewCreateFoodModalOpen, setIsNewCreateFoodModalOpen] = useState(false);
 
@@ -28,7 +28,8 @@ export function Dashboard() {
         <FoodsContainer data-testid="foods-list">
           {foods.map(food => (
               <Food
-                key={food.id} 
+                key={food.id}
+                isAvailable={isAvailable} 
                 food={food} 
                 handleDelete={deleteFood} 
                 handleUpdateFood={updateFood}

@@ -1,4 +1,3 @@
-import { useFoods } from '../../hooks/useFoods';
 import { FiEdit3, FiTrash } from 'react-icons/fi';
 import { Container } from './styles';
 
@@ -14,17 +13,16 @@ interface IFood {
 
 interface IFoodProps {
   food: IFood;
-  handleUpdateFood: (food:IFood) => void
-  handleDelete: (id:number) => void
+  handleUpdateFood: (food: IFood) => void
+  handleDelete: (id: number) => void
+  isAvailable: boolean;
 }
 
-export function Food({ food, handleDelete, handleUpdateFood }: IFoodProps) {
-  const { isAvailable } = useFoods();
-
+export function Food({ food, isAvailable, handleDelete, handleUpdateFood }: IFoodProps) {
   const updatingFood = () => {
     handleUpdateFood(food);
   }
-  
+
   return (
     <Container>
       <header>

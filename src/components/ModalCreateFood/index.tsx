@@ -7,6 +7,7 @@ import { Input } from '../Input';
 import { useFoods } from '../../hooks/useFoods';
 
 interface ICreateFoodContent {
+  id: string;
   name: string,
   description: string;
   price: string,
