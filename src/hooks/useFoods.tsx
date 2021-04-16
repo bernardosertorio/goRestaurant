@@ -19,10 +19,11 @@ interface ProviderFoodsProps {
 interface IFoodsContextData {
   foods: IFood[];
   isAvailable: boolean;
+  editingFood: IFood;
   createFood: (food: IFoodInput) => void;
   updateFood: (food: IFood) => void;
   deleteFood: (id: number) => void;
-  toggleAvailable: (food: IFood) => void; 
+  toggleAvailable: (food: IFood) => void;
 };
 
 export const FoodsContext = createContext<IFoodsContextData>(
@@ -31,6 +32,7 @@ export const FoodsContext = createContext<IFoodsContextData>(
 
 export function FoodsProvider({ children }: ProviderFoodsProps) {
   const [isAvailable, setIsAvailable] = useState(true);
+  const [editingFood, setEditingFood] = useState<IFood>({} as IFood);
   const [foods, setFoods] = useState<IFood[]>([]);
 
   useEffect(() => {
@@ -52,18 +54,35 @@ export function FoodsProvider({ children }: ProviderFoodsProps) {
 
   async function updateFood(food: IFoodInput): Promise<void> {
     try {
-      const foodUpdated = await api.put(`/foods/${food}`, 
-        {...food, ...food },
-      );
+      const listFood = foods.map(currentFood => {
+        if (currentFood.id !== editingFood.id) {
+          return currentFood;
+        }
+        return {
+          ...food,
+          id: editingFood.id,
+          available: editingFood.available,
+        };
+      });
+      setFoods(listFood);
 
-      const foodsUpdated = foods.map(
-        f => f.id !== foodUpdated.data.id ? f : foodUpdated.data
-      );
+      await api.put(`/foods/${editingFood.id}`, {
+        ...food,
+        id: editingFood.id,
+        available: editingFood.available,
+      });
 
-      setFoods(foodsUpdated)
     } catch (err) {
       console.log(err);
-    }
+    };
+  };
+
+  async function deleteFood(id: number): Promise<void> {
+    await api.delete(`/foods/${id}`);
+
+    const foodsFiltered = foods.filter(food => food.id !== id);
+
+    setFoods(foodsFiltered);
   };
 
   async function toggleAvailable(food: IFood) {
@@ -75,21 +94,19 @@ export function FoodsProvider({ children }: ProviderFoodsProps) {
     setIsAvailable(!isAvailable);
   };
 
-  async function deleteFood(id: number): Promise<void> {
-    await api.delete(`/foods/${id}`);
-
-    const foodsFiltered = foods.filter(food => food.id !== id);
-
-    setFoods(foodsFiltered);
-  };
-
   return (
     <FoodsContext.Provider value={{ 
-      foods, isAvailable, createFood, updateFood, deleteFood, toggleAvailable 
+      foods, 
+      isAvailable, 
+      editingFood, 
+      createFood, 
+      updateFood, 
+      deleteFood, 
+      toggleAvailable 
     }}>
       {children} 
     </FoodsContext.Provider>
-  )
+  );
 };
 
 export function useFoods() {
