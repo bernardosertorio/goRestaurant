@@ -52,11 +52,7 @@ createServer({
       return schema.create('food', data);
     });
 
-    this.delete('/foods/:id', (schema, request) => {
-      let id = Number(request.params.id);
-
-      return schema.foods.find(id).destroy();
-    });
+    this.del('/foods/:id');
   }
 });
 
