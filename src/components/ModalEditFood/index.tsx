@@ -24,25 +24,25 @@ interface IEditFoodData {
 interface IModalUpdateFoodProps {
   isOpen: boolean;
   setIsOpen: () => void;
-  //handleUpdateFood: (food: Omit<IUpdateFoodContent, 'id' | 'available'>) => void;
+  handleUpdateFood: (food: IUpdateFoodContent) => void;
   editingFood: IUpdateFoodContent;
 }
 
 export function ModalEditFood({ 
   isOpen, 
   editingFood, 
-  //handleUpdateFood, 
-  setIsOpen }: IModalUpdateFoodProps) {
+  handleUpdateFood, 
+  setIsOpen 
+}: IModalUpdateFoodProps) {
   const formRef = useRef<FormHandles>(null);
 
   const handleSubmit = useCallback(
-    async (data: IEditFoodData) => {
+    async (data: IUpdateFoodContent) => {
       setIsOpen();
-     // handleUpdateFood(data);
+      handleUpdateFood(data);
     },
-    [setIsOpen],
+    [handleUpdateFood, setIsOpen],
   );
-
 
   return (
     <Modal isOpen={isOpen} onRequestClose={setIsOpen}>

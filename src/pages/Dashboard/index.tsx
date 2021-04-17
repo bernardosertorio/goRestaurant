@@ -38,6 +38,7 @@ export function Dashboard() {
         <ModalEditFood  
           isOpen={editModalOpen} 
           setIsOpen={toggleEditModal}
+          handleUpdateFood={updateFood}
           editingFood={editingFood}
         /> 
         <FoodsContainer data-testid="foods-list">
