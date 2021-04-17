@@ -2,11 +2,21 @@ import { useState } from 'react';
 import { Food } from '../../components/Food';
 import { Header } from '../../components/Header';
 import { ModalCreateFood } from '../../components/ModalCreateFood';
+import { ModalEditFood } from '../../components/ModalEditFood';
 import { FoodsContainer } from './styles';
 import { useFoods } from '../../hooks/useFoods';
 
 export function Dashboard() {
-  const { foods, isAvailable, deleteFood, updateFood } = useFoods();
+  const { 
+    foods, 
+    isAvailable, 
+    deleteFood, 
+    updateFood, 
+    editingFood,
+    editModalOpen,
+    toggleEditModal,
+    handleEditFood, 
+  } = useFoods();
 
   const [isNewCreateFoodModalOpen, setIsNewCreateFoodModalOpen] = useState(false);
 
@@ -25,6 +35,11 @@ export function Dashboard() {
           isOpen={isNewCreateFoodModalOpen} 
           onRequestClose={handleCloseNewCreateFoodModal}
         />
+        <ModalEditFood  
+          isOpen={editModalOpen} 
+          setIsOpen={toggleEditModal}
+          editingFood={editingFood}
+        /> 
         <FoodsContainer data-testid="foods-list">
           {foods.map(food => (
               <Food
@@ -32,9 +47,9 @@ export function Dashboard() {
                 isAvailable={isAvailable} 
                 food={food} 
                 handleDelete={deleteFood} 
-                handleUpdateFood={updateFood}
+                handleUpdateFood={handleEditFood}
               />
-            ))}          
+            ))}         
         </FoodsContainer>
       </>
     );

@@ -1,11 +1,9 @@
-import { useRef } from 'react';
+import { useRef, useCallback } from 'react';
 import { FiCheckSquare } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from './styles';
 import { Modal } from '../Modal';
 import { Input } from '../Input';
-
-import { useFoods } from '../../hooks/useFoods';
 
 interface IUpdateFoodContent {
   id: number;
@@ -16,23 +14,39 @@ interface IUpdateFoodContent {
   image: string;
 }
 
-interface IModalUpdateFoodProps {
-  isOpen: boolean;
-  onRequestClose: () => void;
+interface IEditFoodData {
+  name: string;
+  image: string;
+  price: string;
+  description: string;
 }
 
-export function ModalEditFood({ isOpen, onRequestClose }: IModalUpdateFoodProps) {
-  const formRef = useRef<FormHandles>(null);
-  const { updateFood, editingFood } = useFoods();
+interface IModalUpdateFoodProps {
+  isOpen: boolean;
+  setIsOpen: () => void;
+  //handleUpdateFood: (food: Omit<IUpdateFoodContent, 'id' | 'available'>) => void;
+  editingFood: IUpdateFoodContent;
+}
 
-  async function handleUpdateFoodSubmit(food: IUpdateFoodContent) {
-    updateFood(food);
-    onRequestClose();
-  }
+export function ModalEditFood({ 
+  isOpen, 
+  editingFood, 
+  //handleUpdateFood, 
+  setIsOpen }: IModalUpdateFoodProps) {
+  const formRef = useRef<FormHandles>(null);
+
+  const handleSubmit = useCallback(
+    async (data: IEditFoodData) => {
+      setIsOpen();
+     // handleUpdateFood(data);
+    },
+    [setIsOpen],
+  );
+
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={onRequestClose}>
-      <Form ref={formRef} onSubmit={handleUpdateFoodSubmit} initialData={editingFood}>
+    <Modal isOpen={isOpen} onRequestClose={setIsOpen}>
+      <Form ref={formRef} onSubmit={handleSubmit} initialData={editingFood}>
         <h1>Editar Prato</h1>
         <Input name="image" placeholder="Cole o link aqui" />
 
