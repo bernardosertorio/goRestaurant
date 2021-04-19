@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Food } from '../../components/Food';
 import { Header } from '../../components/Header';
 import { ModalCreateFood } from '../../components/ModalCreateFood';
@@ -10,30 +9,24 @@ export function Dashboard() {
   const { 
     foods, 
     isAvailable, 
-    deleteFood, 
+    deleteFood,
+    createFood, 
     updateFood, 
     editingFood,
     editModalOpen,
+    modalOpen,
+    toggleModal,
     toggleEditModal,
     handleEditFood, 
   } = useFoods();
 
-  const [isNewCreateFoodModalOpen, setIsNewCreateFoodModalOpen] = useState(false);
-
-  function handleOpenNewCreateFoodModal() {
-    setIsNewCreateFoodModalOpen(true)
-  }
-
-  function handleCloseNewCreateFoodModal() {
-    setIsNewCreateFoodModalOpen(false)
-  }
-
     return (
       <>
-        <Header onOpenNewCreateFoodModal={handleOpenNewCreateFoodModal}/>
+        <Header openModal={toggleModal}/>
         <ModalCreateFood 
-          isOpen={isNewCreateFoodModalOpen} 
-          onRequestClose={handleCloseNewCreateFoodModal}
+          isOpen={modalOpen} 
+          setIsOpen={toggleModal}
+          createFood={createFood}
         />
         <ModalEditFood  
           isOpen={editModalOpen} 

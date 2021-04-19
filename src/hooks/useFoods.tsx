@@ -12,19 +12,21 @@ interface IFood {
 
 type IFoodInput = Omit<IFood, 'id' | 'available'>;
 
-interface ProviderFoodsProps {
+interface IProviderFoodsProps {
   children: ReactNode;
 };
 
 interface IFoodsContextData {
   foods: IFood[];
   isAvailable: boolean;
+  modalOpen: boolean;
   editModalOpen: boolean;
   editingFood: IFood;
   createFood: (food: IFoodInput) => void;
   updateFood: (food: IFood) => void;
   deleteFood: (id: number) => void;
   toggleEditModal(): void;
+  toggleModal(): void;
   toggleAvailable: (food: IFood) => void;
   handleEditFood(food: IFood): void;
 };
@@ -33,8 +35,9 @@ export const FoodsContext = createContext<IFoodsContextData>(
   {} as IFoodsContextData
 );
 
-export function FoodsProvider({ children }: ProviderFoodsProps) {
+export function FoodsProvider({ children }: IProviderFoodsProps) {
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const [isAvailable, setIsAvailable] = useState(true);
   const [editingFood, setEditingFood] = useState<IFood>({} as IFood);
@@ -99,6 +102,10 @@ export function FoodsProvider({ children }: ProviderFoodsProps) {
     setIsAvailable(!isAvailable);
   };
 
+  function toggleModal(): void {
+    setModalOpen(!modalOpen);
+  }
+
   function toggleEditModal(): void {
     setEditModalOpen(!editModalOpen);
   }
@@ -113,12 +120,14 @@ export function FoodsProvider({ children }: ProviderFoodsProps) {
       foods, 
       isAvailable, 
       editingFood,
-      editModalOpen, 
+      editModalOpen,
+      modalOpen, 
       createFood, 
       updateFood, 
       deleteFood, 
       toggleAvailable,
       toggleEditModal,
+      toggleModal,
       handleEditFood, 
     }}>
       {children} 

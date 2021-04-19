@@ -6,12 +6,12 @@ ReactModal.setAppElement('#root');
 
 interface IModalProps {
   isOpen: boolean;
-  onRequestClose: () => void;
+  setIsOpen: () => void;
   children: ReactNode;
 }
 
-export function Modal({ isOpen, onRequestClose, children }: IModalProps) {
-  const [modalStatus, setModalStatus] = useState(isOpen)
+export function Modal({ isOpen, setIsOpen, children }: IModalProps) {
+  const [modalStatus, setModalStatus] = useState(isOpen);
 
   useEffect(() => {
     setModalStatus(isOpen);
@@ -20,7 +20,7 @@ export function Modal({ isOpen, onRequestClose, children }: IModalProps) {
     return (
       <ReactModal
         shouldCloseOnOverlayClick={!false}
-        onRequestClose={onRequestClose}
+        onRequestClose={setIsOpen}
         isOpen={modalStatus}
         ariaHideApp={false}
         style={{

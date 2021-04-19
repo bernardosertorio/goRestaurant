@@ -14,13 +14,6 @@ interface IUpdateFoodContent {
   image: string;
 }
 
-interface IEditFoodData {
-  name: string;
-  image: string;
-  price: string;
-  description: string;
-}
-
 interface IModalUpdateFoodProps {
   isOpen: boolean;
   setIsOpen: () => void;
@@ -45,7 +38,7 @@ export function ModalEditFood({
   );
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={setIsOpen}>
+    <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <Form ref={formRef} onSubmit={handleSubmit} initialData={editingFood}>
         <h1>Editar Prato</h1>
         <Input name="image" placeholder="Cole o link aqui" />

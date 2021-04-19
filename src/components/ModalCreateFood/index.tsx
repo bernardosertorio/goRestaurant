@@ -1,10 +1,9 @@
-import { useRef } from 'react';
+import { useRef, useCallback } from 'react';
 import { FiCheckSquare } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from './styles';
 import { Modal } from '../Modal';
 import { Input } from '../Input';
-import { useFoods } from '../../hooks/useFoods';
 
 interface ICreateFoodContent {
   id: string;
@@ -14,22 +13,23 @@ interface ICreateFoodContent {
   image: string;
 }
 
-interface ModalCreateFoodProps {
+interface IModalCreateFoodProps {
   isOpen: boolean;
-  onRequestClose: () => void;
+  setIsOpen: () => void;
+  createFood: (food: Omit<ICreateFoodContent, 'id'>) => void;
 }
 
-export function ModalCreateFood({ isOpen, onRequestClose }: ModalCreateFoodProps) {
+export function ModalCreateFood({ isOpen, setIsOpen, createFood }: IModalCreateFoodProps) {
   const formRef = useRef<FormHandles>(null)
-  const { createFood } = useFoods();
 
-  async function handleCreateNewFoodSubmit(data: ICreateFoodContent) {
+  const handleCreateNewFoodSubmit = useCallback( 
+    async (data: ICreateFoodContent) => {
     createFood(data);
-    onRequestClose();
-  }
+    setIsOpen();
+  }, [createFood, setIsOpen]);
 
     return (
-      <Modal isOpen={isOpen} onRequestClose={onRequestClose}>
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         <Form ref={formRef} onSubmit={handleCreateNewFoodSubmit}>
           <h1>Novo Prato</h1>
           <Input name="image" placeholder="Cole o link aqui" />
