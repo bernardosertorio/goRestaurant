@@ -7,8 +7,7 @@ import { useFoods } from '../../hooks/useFoods';
 
 export function Dashboard() {
   const { 
-    foods, 
-    isAvailable, 
+    foods,  
     deleteFood,
     createFood, 
     updateFood, 
@@ -38,7 +37,6 @@ export function Dashboard() {
           {foods.map(food => (
               <Food
                 key={food.id}
-                isAvailable={isAvailable} 
                 food={food} 
                 handleDelete={deleteFood} 
                 handleUpdateFood={handleEditFood}

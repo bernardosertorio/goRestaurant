@@ -1,5 +1,8 @@
+import { useState } from 'react';
 import { FiEdit3, FiTrash } from 'react-icons/fi';
 import { Container } from './styles';
+
+import { api } from '../../services/api';
 
 interface IFood {
   id: number;
@@ -13,22 +16,39 @@ interface IFood {
 
 interface IFoodProps {
   food: IFood;
-  handleUpdateFood: (food: IFood) => void
-  handleDelete: (id: number) => void
-  isAvailable: boolean;
+  handleUpdateFood: (food: IFood) => void;
+  handleDelete: (id: number) => void;
 }
 
-export function Food({ food, isAvailable, handleDelete, handleUpdateFood }: IFoodProps) {
+export function Food({ 
+  food,  
+  handleDelete, 
+  handleUpdateFood }: IFoodProps) {
+  const [isAvailable, setIsAvailable] = useState(food.available)
+  
+  const toggleAvailable = async (food: IFood) => {
+    await api.put(`/foods/${food.id}`, {
+      ...food,
+      available: !isAvailable,
+    });
+
+    setIsAvailable(!isAvailable);
+  };
+
   const updatingFood = () => {
     handleUpdateFood(food);
-  }
+  };
 
   const deleteFood = () => {
     handleDelete(food.id);
-  }
+  };
+
+  const foodAvailable = () => {
+    toggleAvailable(food);
+  };
 
   return (
-    <Container>
+    <Container available={isAvailable}>
       <header>
         <img src={food.image} alt={food.name} />
       </header>
@@ -61,12 +81,14 @@ export function Food({ food, isAvailable, handleDelete, handleUpdateFood }: IFoo
         </div>
 
         <div className="availability-container">
-          <p>{ isAvailable ? 'Disponível': 'Indisponível' }</p>
+          <p>{ isAvailable ? 'Disponível' : 'Indisponível'}</p>
 
           <label htmlFor={`available-switch-${food.id}`} className="switch">
             <input
               id={`available-switch-${food.id}`}
               type="checkbox"
+              checked={isAvailable}
+              onChange={foodAvailable}
               data-testid={`change-status-food-${food.id}`}
             />
               <span className="slider" />

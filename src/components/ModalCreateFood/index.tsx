@@ -5,7 +5,7 @@ import { Form } from './styles';
 import { Modal } from '../Modal';
 import { Input } from '../Input';
 
-interface ICreateFoodContent {
+interface ICreateFoodData {
   id: string;
   name: string,
   description: string;
@@ -16,14 +16,14 @@ interface ICreateFoodContent {
 interface IModalCreateFoodProps {
   isOpen: boolean;
   setIsOpen: () => void;
-  createFood: (food: Omit<ICreateFoodContent, 'id'>) => void;
+  createFood: (food: Omit<ICreateFoodData, 'id'>) => void;
 }
 
 export function ModalCreateFood({ isOpen, setIsOpen, createFood }: IModalCreateFoodProps) {
   const formRef = useRef<FormHandles>(null)
 
   const handleCreateNewFoodSubmit = useCallback( 
-    async (data: ICreateFoodContent) => {
+    async (data: ICreateFoodData) => {
     createFood(data);
     setIsOpen();
   }, [createFood, setIsOpen]);

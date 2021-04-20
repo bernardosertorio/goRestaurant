@@ -23,7 +23,7 @@ interface IModalUpdateFoodProps {
 
 export function ModalEditFood({ 
   isOpen, 
-  editingFood, 
+  editingFood,
   handleUpdateFood, 
   setIsOpen 
 }: IModalUpdateFoodProps) {

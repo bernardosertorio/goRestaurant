@@ -18,7 +18,6 @@ interface IProviderFoodsProps {
 
 interface IFoodsContextData {
   foods: IFood[];
-  isAvailable: boolean;
   modalOpen: boolean;
   editModalOpen: boolean;
   editingFood: IFood;
@@ -27,7 +26,6 @@ interface IFoodsContextData {
   deleteFood: (id: number) => void;
   toggleEditModal(): void;
   toggleModal(): void;
-  toggleAvailable: (food: IFood) => void;
   handleEditFood(food: IFood): void;
 };
 
@@ -38,8 +36,6 @@ export const FoodsContext = createContext<IFoodsContextData>(
 export function FoodsProvider({ children }: IProviderFoodsProps) {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-
-  const [isAvailable, setIsAvailable] = useState(true);
   const [editingFood, setEditingFood] = useState<IFood>({} as IFood);
   const [foods, setFoods] = useState<IFood[]>([]);
 
@@ -85,21 +81,17 @@ export function FoodsProvider({ children }: IProviderFoodsProps) {
     }
   };
 
+  async function handleEditFood(food: IFood): Promise<void> {
+    setEditingFood(food);
+    toggleEditModal();
+  }
+
   async function deleteFood(id: number): Promise<void> {
     await api.delete(`/foods/${id}`);
 
     const foodsFiltered = foods.filter(food => food.id !== id);
 
     setFoods(foodsFiltered);
-  };
-
-  async function toggleAvailable(food: IFood) {
-    await api.put(`/foods/${food.id}`, {
-      ...food,
-      available: !isAvailable,
-    });
-
-    setIsAvailable(!isAvailable);
   };
 
   function toggleModal(): void {
@@ -110,22 +102,15 @@ export function FoodsProvider({ children }: IProviderFoodsProps) {
     setEditModalOpen(!editModalOpen);
   }
 
-  function handleEditFood(food: IFood): void {
-    setEditingFood(food);
-    toggleEditModal();
-  }
-
   return (
     <FoodsContext.Provider value={{ 
-      foods, 
-      isAvailable, 
+      foods,  
       editingFood,
       editModalOpen,
       modalOpen, 
       createFood, 
       updateFood, 
       deleteFood, 
-      toggleAvailable,
       toggleEditModal,
       toggleModal,
       handleEditFood, 

@@ -55,6 +55,8 @@ createServer({
     this.del('/foods/:id');
 
     this.patch('/foods/:id');
+
+    this.put("/foods/:id");
   }
 });
 
