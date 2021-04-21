@@ -56,7 +56,12 @@ createServer({
 
     this.patch('/foods/:id');
 
-    this.put("/foods/:id");
+    this.put("/foods/:id", async function (schema, request) {
+      let id = request.params.id;
+      const data = JSON.parse(request.requestBody);
+      
+      return schema.find('food', id)?.update({data})
+    })
   }
 });
 

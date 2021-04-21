@@ -1,3 +1,4 @@
+import { error } from 'node:console';
 import { createContext, useEffect, useState, ReactNode, useContext } from 'react';
 import { api } from '../services/api';
 
@@ -37,7 +38,7 @@ export function FoodsProvider({ children }: IProviderFoodsProps) {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [editingFood, setEditingFood] = useState<IFood>({} as IFood);
-  const [foods, setFoods] = useState<IFood[]>([]);
+  const [foods, setFoods] = useState<IFood[]>([])
 
   useEffect(() => {
     api.get('/foods').then(response => setFoods(response.data.foods))
